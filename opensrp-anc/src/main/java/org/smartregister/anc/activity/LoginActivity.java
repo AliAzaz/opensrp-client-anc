@@ -35,7 +35,7 @@ public class LoginActivity extends BaseLoginActivity implements BaseLoginContrac
             org.smartregister.util.Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
 
-        if (mLoginPresenter.isSiteCharacteristicsSet()) {
+        if (mLoginPresenter.isSiteCharacteristicsSet() || true) {
 
             gotToHomeRegister(remote);
 
