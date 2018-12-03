@@ -110,7 +110,7 @@ public class ECSyncHelper extends org.smartregister.sync.helper.ECSyncHelper imp
         eventClientRepository.batchInsertClients(clients);
     }
 
-    protected void batchInsertEvents(JSONArray events) {
+    public void batchInsertEvents(JSONArray events) {
         eventClientRepository.batchInsertEvents(events, getLastSyncTimeStamp());
     }
 
