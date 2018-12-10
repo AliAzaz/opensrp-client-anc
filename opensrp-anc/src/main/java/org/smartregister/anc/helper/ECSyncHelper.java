@@ -4,6 +4,8 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.configurableviews.helper.PrefsHelper;
 import org.smartregister.repository.EventClientRepository;
@@ -58,4 +60,25 @@ public class ECSyncHelper extends org.smartregister.sync.helper.ECSyncHelper imp
             Log.e(getClass().getName(), "SyncException: " + s, e);
         }
     }
+
+    public void batchInsertClients(JSONArray clients) {
+        eventClientRepository.batchInsertClients(clients);
+    }
+
+    public void batchInsertEvents(JSONArray events) {
+        eventClientRepository.batchInsertEvents(events, getLastSyncTimeStamp());
+    }
+
+    public <T> T convert(JSONObject jo, Class<T> t) {
+        return eventClientRepository.convert(jo, t);
+    }
+
+    public JSONObject convertToJson(Object object) {
+        return eventClientRepository.convertToJson(object);
+    }
+
+    public boolean deleteClient(String baseEntityId) {
+        return eventClientRepository.deleteClient(baseEntityId);
+    }
+
 }

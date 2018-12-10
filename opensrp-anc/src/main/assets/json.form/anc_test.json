@@ -56,6 +56,46 @@
     "next": "step2",
     "fields": [
       {
+        "key": "new_native_accordion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "text": "Native Accordion Text",
+        "type": "native_accordion",
+        "accordion_info_text": "This message is the in the info popup",
+        "accordion_info_title": "Test info display",
+        "display_bottom_section": true,
+        "content_form": "child_enrollment_sub_form",
+        "content_form_location": "json.form/sub_form",
+        "value": [
+          {
+            "key": "respiratory_exam_abnormal",
+            "label": "Abnormal",
+            "type": "check_box",
+            "values": [
+              "rapid_breathing:Rapid breathing:true",
+              "other:Other:true"
+            ]
+          },
+          {
+            "key": "respiratory_exam_radio_button",
+            "label": "Respiratory exam",
+            "type": "native_radio",
+            "values": [
+              "3:Abnormal "
+            ]
+          }
+        ]
+      },
+      {
+        "key": "new_native_accordion_two",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "text": "Native Accordion Text Two",
+        "type": "native_accordion"
+      },
+      {
         "key": "ultrasound",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
