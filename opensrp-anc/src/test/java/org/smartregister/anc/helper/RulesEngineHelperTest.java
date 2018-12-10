@@ -85,7 +85,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         AlertRule alertRule = new AlertRule(30, "2019-07-09");
         Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-09"));
 
-        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, "alert-rules.yml");
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
 
         Assert.assertEquals(Constants.ALERT_STATUS.NOT_DUE, buttonAlertStatus);
     }
@@ -97,7 +97,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         AlertRule alertRule = new AlertRule(30, "2018-11-09");
         Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-09"));
 
-        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, "alert-rules.yml");
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
 
         Assert.assertEquals(Constants.ALERT_STATUS.DUE, buttonAlertStatus);
     }
@@ -110,19 +110,32 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         AlertRule alertRule = new AlertRule(30, "2018-11-01");
         Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-09"));
 
-        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, "alert-rules.yml");
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
 
         Assert.assertEquals(Constants.ALERT_STATUS.OVERDUE, buttonAlertStatus);
     }
 
 
     @Test
-    public void testGetButtonAlertStatusReturnsExpiredForDueDeliveryDate() {
+    public void testGetButtonAlertStatusReturnsDueDeliveryForDueDeliveryDate() {
+
+        //delivery due
+        AlertRule alertRule = new AlertRule(40, "2018-11-11");
+        Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-12"));
+
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
+
+        Assert.assertEquals(Constants.ALERT_STATUS.DELIVERY_DUE, buttonAlertStatus);
+    }
+
+    @Test
+    public void testGetButtonAlertStatusReturnsExpiredForExpiredDeliveryDate() {
 
         //expired
-        AlertRule alertRule = new AlertRule(41, "2018-11-11");
+        AlertRule alertRule = new AlertRule(40, "2018-11-04");
+        Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-11"));
 
-        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, "alert-rules.yml");
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
 
         Assert.assertEquals(Constants.ALERT_STATUS.EXPIRED, buttonAlertStatus);
     }
@@ -135,9 +148,9 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         AlertRule alertRule = new AlertRule(41, "2018-10-09");
         Whitebox.setInternalState(alertRule, ALERT_RULE_FIELD_TODAY_DATE, new LocalDate("2018-11-09"));
 
-        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, "alert-rules.yml");
+        String buttonAlertStatus = rulesEngineHelper.getButtonAlertStatus(alertRule, Constants.RULES_FILE.ALERT_RULES);
 
-        Assert.assertEquals(Constants.ALERT_STATUS.EXPIRED_OVERDUE, buttonAlertStatus);
+        Assert.assertEquals(Constants.ALERT_STATUS.EXPIRED, buttonAlertStatus);
     }
 
     @Test
@@ -146,7 +159,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(20, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 
@@ -160,7 +173,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(4, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 
@@ -174,7 +187,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(12, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 
@@ -188,7 +201,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(20, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 
@@ -202,7 +215,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(28, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 
@@ -216,7 +229,7 @@ public class RulesEngineHelperTest extends BaseUnitTest {
         ContactRule contactRule = new ContactRule(40, true, DUMMY_BASE_ENTITY_ID);
 
         RulesEngineHelper rulesEngineHelperSpy = Mockito.spy(rulesEngineHelper);
-        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, "contact-rules.yml");
+        List<Integer> scheduleWeeksList = rulesEngineHelperSpy.getContactVisitSchedule(contactRule, Constants.RULES_FILE.CONTACT_RULES);
 
         Assert.assertNotNull(scheduleWeeksList);
 

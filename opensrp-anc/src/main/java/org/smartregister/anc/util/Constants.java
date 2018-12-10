@@ -16,7 +16,7 @@ public abstract class Constants {
 
     public static final String GLOBAL_IDENTIFIER = "identifier";
     public static final String ANC_ID = "ANC_ID";
-    public static final int DELIVERY_DATE_WEEKS = 41;
+    public static final int DELIVERY_DATE_WEEKS = 40;
 
     public static class CONFIGURATION {
         public static final String LOGIN = "login";
@@ -46,6 +46,7 @@ public abstract class Constants {
         public static final String ENTITY_ID = "entity_id";
         public static final String OPTIONS = "options";
         public static final String ENCOUNTER_LOCATION = "encounter_location";
+        public static final String ENCOUNTER_TYPE = "encounter_type";
         public static final String ATTRIBUTES = "attributes";
         public static final String DEATH_DATE = "deathdate";
         public static final String DEATH_DATE_APPROX = "deathdateApprox";
@@ -82,6 +83,7 @@ public abstract class Constants {
         public static final String CLIENT = "client";
         public static final String TO_RESCHEDULE = "to_reschedule";
         public static final String IS_REMOTE_LOGIN = "is_remote_login";
+        public static final String CONTACT_NO = "contact_number";
     }
 
     public static class OPENMRS {
@@ -111,8 +113,30 @@ public abstract class Constants {
         public static final String DUE = "due";
         public static final String OVERDUE = "overdue";
         public static final String NOT_DUE = "not_due";
-        public static final String EXPIRED = "expired";
+        public static final String DELIVERY_DUE = "delivery_due";
         public static final String IN_PROGRESS = "in_progress";
-        public static final String EXPIRED_OVERDUE = "expired_overdue";
+        public static final String EXPIRED = "expired";
     }
+
+    public static class FILE_CATEGORY {
+        public static final String PROFILE_PIC = "profilepic";
+
+    }
+
+    public static class RULES_FILE {
+        public static final String CONTACT_RULES = "contact-rules.yml";
+        public static final String ALERT_RULES = "alert-rules.yml";
+
+    }
+
+    public static class CONFIG_FILE {
+        public static final String CONTACT_SUMMARY = "contact-summary.yml";
+
+    }
+
+    public static class SUFFIX {
+        public static final String TOTAL_COUNT = "_total_count";
+
+    }
+
 }

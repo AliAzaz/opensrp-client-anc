@@ -44,7 +44,6 @@ public class AncEditTextFactory extends EditTextFactory {
 
             RelativeLayout rootLayout = getRootLayout(context);
             final MaterialEditText editText = rootLayout.findViewById(R.id.edit_text);
-
             attachLayout(stepName, context, formFragment, jsonObject, editText, imageView);
 
             JSONArray canvasIds = new JSONArray();

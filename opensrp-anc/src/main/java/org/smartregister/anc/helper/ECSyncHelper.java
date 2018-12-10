@@ -8,12 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.configurableviews.helper.PrefsHelper;
-import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.EventClientRepository;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static org.smartregister.configurableviews.util.Constants.CONFIGURATION.LOGIN;
 import static org.smartregister.configurableviews.util.Constants.LAST_VIEWS_SYNC_TIMESTAMP;
@@ -40,50 +35,6 @@ public class ECSyncHelper extends org.smartregister.sync.helper.ECSyncHelper imp
         return instance;
     }
 
-    public List<EventClient> getEvents(Date lastSyncDate, String syncStatus) {
-        try {
-            return eventClientRepository.fetchEventClients(lastSyncDate, syncStatus);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
-        }
-        return new ArrayList<>();
-    }
-
-    public JSONObject getClient(String baseEntityId) {
-        try {
-            return eventClientRepository.getClientByBaseEntityId(baseEntityId);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
-        }
-        return null;
-    }
-
-    public void addClient(String baseEntityId, JSONObject jsonObject) {
-        try {
-            eventClientRepository.addorUpdateClient(baseEntityId, jsonObject);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
-        }
-    }
-
-    public void addEvent(String baseEntityId, JSONObject jsonObject) {
-        try {
-            eventClientRepository.addEvent(baseEntityId, jsonObject);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
-        }
-    }
-
-    public List<EventClient> allEvents(long startSyncTimeStamp, long lastSyncTimeStamp) {
-        try {
-            return eventClientRepository.fetchEventClients(startSyncTimeStamp, lastSyncTimeStamp);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
-        }
-        return new ArrayList<>();
-    }
-
-
     public long getLastViewsSyncTimeStamp() {
         return PreferenceManager.getDefaultSharedPreferences(context).getLong(LAST_VIEWS_SYNC_TIMESTAMP, 0);
     }
@@ -94,6 +45,10 @@ public class ECSyncHelper extends org.smartregister.sync.helper.ECSyncHelper imp
 
     public void updateLoginConfigurableViewPreference(String loginJson) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(VIEW_CONFIGURATION_PREFIX + LOGIN, loginJson).commit();
+    }
+
+    public boolean deleteEventsByBaseEntityId(String baseEntityId) {
+        return eventClientRepository.deleteEventsByBaseEntityId(baseEntityId, MOVE_TO_CATCHMENT_EVENT);
     }
 
     private class SyncException extends Exception {
