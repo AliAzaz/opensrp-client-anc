@@ -200,7 +200,7 @@ public class ContactJsonFormActivity extends JsonFormActivity {
                 e.printStackTrace();
             }
         } else {
-            super.fetchFields(parentJson, popup);
+            return super.fetchFields(parentJson, popup);
         }
 
         return fields;
@@ -222,7 +222,7 @@ public class ContactJsonFormActivity extends JsonFormActivity {
                 e.printStackTrace();
             }
         } else {
-            super.specifyFields(parentJson);
+          return super.specifyFields(parentJson);
         }
         return fields;
     }
