@@ -7,15 +7,18 @@ import android.util.Log;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
+import com.vijay.jsonwizard.utils.FormUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.smartregister.anc.R;
 import org.smartregister.anc.application.AncApplication;
 import org.smartregister.anc.domain.Contact;
 import org.smartregister.anc.fragment.ContactJsonFormFragment;
 import org.smartregister.anc.model.PartialContact;
 import org.smartregister.anc.util.Constants;
-import org.smartregister.util.FormUtils;
+import org.smartregister.anc.view.AncGenericDialogPopup;
 
 import java.io.Serializable;
 
@@ -29,6 +32,8 @@ public class ContactJsonFormActivity extends JsonFormActivity {
     private Contact contact;
     private ProgressDialog progressDialog;
     private static final String TAG = ContactJsonFormActivity.class.getCanonicalName();
+    private AncGenericDialogPopup genericPopupDialog = AncGenericDialogPopup.getInstance();
+    private FormUtils formUtils = new FormUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class ContactJsonFormActivity extends JsonFormActivity {
     }
 
     @Override
-    public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, Boolean popup) throws JSONException {
+    public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
         callSuperWriteValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
     }
 
@@ -65,8 +70,8 @@ public class ContactJsonFormActivity extends JsonFormActivity {
         super.onFormFinish();
     }
 
-    protected void callSuperWriteValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, Boolean popup) throws JSONException {
-        super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId,popup);
+    protected void callSuperWriteValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
+        super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
     }
 
     protected void initializeFormFragmentCore() {
@@ -153,6 +158,73 @@ public class ContactJsonFormActivity extends JsonFormActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    @Override
+    protected JSONArray fetchFields(JSONObject parentJson, Boolean popup) {
+        JSONArray fields = new JSONArray();
+        if (genericPopupDialog.getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+            try {
+                if (parentJson.has(JsonFormConstants.SECTIONS) && parentJson.get(JsonFormConstants.SECTIONS) instanceof JSONArray) {
+                    JSONArray sections = parentJson.getJSONArray(JsonFormConstants.SECTIONS);
+                    for (int i = 0; i < sections.length(); i++) {
+                        JSONObject sectionJson = sections.getJSONObject(i);
+                        if (sectionJson.has(JsonFormConstants.FIELDS)) {
+                            if (popup) {
+                                JSONArray jsonArray = sectionJson.getJSONArray(JsonFormConstants.FIELDS);
+                                for (int k = 0; k < jsonArray.length(); k++) {
+                                    JSONObject item = jsonArray.getJSONObject(k);
+                                    if (item.getString(JsonFormConstants.KEY).equals(genericPopupDialog.getParentKey())) {
+                                        fields = formUtils.concatArray(fields, specifyFields(item));
+                                    }
+                                }
+                            } else {
+                                fields = formUtils.concatArray(fields, sectionJson.getJSONArray(JsonFormConstants.FIELDS));
+                            }
+                        }
+                    }
+                } else if (parentJson.has(JsonFormConstants.FIELDS) && parentJson.get(JsonFormConstants.FIELDS) instanceof JSONArray) {
+                    if (popup) {
+                        JSONArray jsonArray = parentJson.getJSONArray(JsonFormConstants.FIELDS);
+                        for (int k = 0; k < jsonArray.length(); k++) {
+                            JSONObject item = jsonArray.getJSONObject(k);
+                            if (item.getString(JsonFormConstants.KEY).equals(genericPopupDialog.getParentKey())) {
+                                fields = specifyFields(item);
+                            }
+                        }
+                    } else {
+                        fields = parentJson.getJSONArray(JsonFormConstants.FIELDS);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            super.fetchFields(parentJson, popup);
+        }
+
+        return fields;
+    }
+
+    @Override
+    protected JSONArray specifyFields(JSONObject parentJson) {
+        JSONArray fields = new JSONArray();
+        if (genericPopupDialog.getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+            try {
+                if (parentJson.has(JsonFormConstants.CONTENT_FORM)) {
+                    if (getExtraFieldsWithValues() != null) {
+                        fields = getExtraFieldsWithValues();
+                    } else {
+                        fields = getSubFormFields(parentJson.get(JsonFormConstants.CONTENT_FORM).toString(), parentJson.get(JsonFormConstants.CONTENT_FORM_LOCATION).toString(), fields);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            super.specifyFields(parentJson);
+        }
+        return fields;
     }
 }
 

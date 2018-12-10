@@ -81,7 +81,4 @@ public class ECSyncHelper extends org.smartregister.sync.helper.ECSyncHelper imp
         return eventClientRepository.deleteClient(baseEntityId);
     }
 
-    public boolean deleteEventsByBaseEntityId(String baseEntityId) {
-        return eventClientRepository.deleteEventsByBaseEntityId(baseEntityId, MOVE_TO_CATCHMENT_EVENT);
-    }
 }
