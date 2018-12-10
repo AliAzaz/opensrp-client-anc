@@ -74,7 +74,7 @@
         "edit_text_style": "bordered",
         "edit_type": "number",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the height"
         },
         "v_numeric": {
@@ -144,7 +144,7 @@
           "err": "Weight must be equal or less than 180"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Pre-gestational weight is required"
         }
       },
@@ -154,7 +154,6 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "",
         "options": [
           {
             "key": "pregest_weight_unknown",
@@ -194,8 +193,36 @@
           "err": "Weight must be equal or less than 180"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the current weight"
+        }
+      },
+      {
+        "key": "first_weight",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "bmi",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
         }
       },
       {
@@ -206,7 +233,14 @@
         "type": "toaster_notes",
         "text": "Body mass index (BMI) = {bmi}\n\nWoman is {weight_cat}. Weight gain during pregnancy should be {exp_weight_gain} kg.",
         "text_color": "#1199F9",
-        "toaster_type": "info"
+        "toaster_type": "info",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster2",
@@ -301,7 +335,7 @@
           "err": "SBP must be equal or less than 260"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Field systolic is required"
         }
       },
@@ -329,14 +363,14 @@
         },
         "v_min": {
           "value": "60",
-          "err": "DBP must be equal or greater than 60"
+          "err": "DBP must be equal to or greater than 60"
         },
         "v_max": {
           "value": "260",
-          "err": "DBP must be equal or less than 260"
+          "err": "DBP must be equal to or less than 260"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Field diastolic is required"
         }
       },
@@ -348,7 +382,14 @@
         "type": "toaster_notes",
         "text": "Measure BP again after 10-15 minutes rest.",
         "text_color": "#D56900",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "bp_systolic_repeat_label",
@@ -358,6 +399,13 @@
         "text_color": "#000000",
         "v_required": {
           "value": true
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -381,8 +429,15 @@
           "err": "SBP must be equal or less than 260"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Field systolic is required"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -393,6 +448,13 @@
         "text_color": "#000000",
         "v_required": {
           "value": true
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -416,8 +478,15 @@
           "err": "DBP must be equal or less than 260"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Field diastolic is required"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -428,7 +497,14 @@
         "type": "toaster_notes",
         "text": "Do urine dipstick test for protein.",
         "text_color": "#D56900",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "symp_sev_preeclampsia",
@@ -489,6 +565,13 @@
         "v_required": {
           "value": true,
           "err": "Please specify any other symptoms or select none"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -540,6 +623,27 @@
         "v_required": {
           "value": true,
           "err": "Please enter the result for the dipstick test."
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "hypertension",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
         }
       },
       {
@@ -551,7 +655,14 @@
         "text": "Hypertension diagnosis! Provide counseling.",
         "toaster_info_text": "Woman has hypertension - SBP of 140 mmHg or higher and/or DBP of 90 mmHg or higher and no proteinuria.\n\nCounseling:\n- Advice to reduce workload and to rest\n- Advise on danger signs\n- Reassess at the next contact or in 1 week if 8 months pregnant\n- If hypertension persists after 1 week or at next contact, refer to hospital or discuss case with the doctor, if available",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster10",
@@ -633,7 +744,7 @@
         "edit_text_style": "bordered",
         "edit_type": "number",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter body temperature"
         },
         "v_numeric": {
@@ -660,7 +771,7 @@
         "toaster_type": "warning",
         "relevance": {
           "step3:body_temp": {
-            "type": "string",
+            "type": "numeric",
             "ex": "greaterThanEqualTo(., \"38\")"
           }
         }
@@ -677,7 +788,7 @@
         },
         "relevance": {
           "step3:body_temp": {
-            "type": "string",
+            "type": "numeric",
             "ex": "greaterThanEqualTo(., \"38\")"
           }
         }
@@ -691,12 +802,12 @@
         "edit_text_style": "bordered",
         "edit_type": "number",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please re-enter body temperature"
         },
         "relevance": {
           "step3:body_temp": {
-            "type": "string",
+            "type": "numeric",
             "ex": "greaterThanEqualTo(., \"38\")"
           }
         },
@@ -725,7 +836,7 @@
         "toaster_type": "problem",
         "relevance": {
           "step3:body_temp_repeat": {
-            "type": "string",
+            "type": "numeric",
             "ex": "greaterThanEqualTo(., \"38\")"
           }
         }
@@ -736,7 +847,6 @@
         "label_text_style": "bold",
         "text": "Pulse rate (bpm)",
         "text_color": "#000000",
-        "label_info_text": "Retake the woman's pulse rate if the first reading was lower than 60 or higher than 100.",
         "v_required": {
           "value": true
         }
@@ -750,7 +860,7 @@
         "edit_text_style": "bordered",
         "edit_type": "number",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter pulse rate"
         },
         "v_numeric": {
@@ -774,16 +884,31 @@
         "type": "toaster_notes",
         "text": "Abnormal pulse rate. Check again after 10 minutes rest.",
         "text_color": "#D56900",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "pulse_rate_repeat_label",
         "type": "label",
         "label_text_style": "bold",
         "text": "Second pulse rate (bpm)",
+        "label_info_text": "Retake the woman's pulse rate if the first reading was lower than 60 or higher than 100.",
         "text_color": "#000000",
         "v_required": {
           "value": true
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -795,8 +920,15 @@
         "edit_text_style": "bordered",
         "edit_type": "number",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter pulse rate"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -808,7 +940,14 @@
         "text": "Abnormal pulse rate. Refer for further investigation.",
         "toaster_info_text": "Procedure:\n- Check for fever, infection, respiratory distress, and arrhythmia\n- Refer for further investigation",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "pallor",
@@ -850,6 +989,8 @@
         "label": "Respiratory exam",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "3",
         "options": [
           {
             "key": "1",
@@ -865,92 +1006,8 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "respiratory_exam_abnormal",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "check_box",
-                "label": "Respiratory exam: abnormal",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "dyspnoea",
-                    "text": "Dyspnoea",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "cough",
-                    "text": "Cough",
-                    "value": false,
-                    "openmrs_entity_parent": " Cough",
-                    "openmrs_entity_id": "143264"
-                  },
-                  {
-                    "key": "rapid_breathing",
-                    "text": "Rapid breathing",
-                    "value": false,
-                    "openmrs_entity_parent": "TACHYPNEA",
-                    "openmrs_entity_id": "125061"
-                  },
-                  {
-                    "key": "slow_breathing",
-                    "text": "Slow breathing",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "wheezing",
-                    "text": "Wheezing",
-                    "value": false,
-                    "openmrs_entity_parent": "WHEEZE",
-                    "openmrs_entity_id": "5209"
-                  },
-                  {
-                    "key": "rales",
-                    "text": "Rales",
-                    "value": false,
-                    "openmrs_entity_parent": "Respiratory Crackles",
-                    "openmrs_entity_id": "127640"
-                  },
-                  {
-                    "key": "other",
-                    "text": "Other (specify)",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ]
-              },
-              {
-                "key": "respiratory_exam_abnormal_other",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "edit_text",
-                "hint": "Specify",
-                "v_regex": {
-                  "value": "[A-Za-z\\s\.\-]*",
-                  "err": "Please enter valid content"
-                },
-                "relevance": {
-                  "step3:respiratory_exam_abnormal": {
-                    "ex-checkbox": [
-                      {
-                        "or": [
-                          "other"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
+            "content_form": "respiratory_exam_sub_form",
+            "content_form_location": ""
           }
         ]
       },
@@ -962,7 +1019,13 @@
         "type": "toaster_notes",
         "text": "Woman has respiratory distress. Refer urgently to the hospital!",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "step3:respiratory_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "oximetry_label",
@@ -972,6 +1035,12 @@
         "text_color": "#000000",
         "v_required": {
           "value": false
+        },
+        "relevance": {
+          "step3:respiratory_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
         }
       },
       {
@@ -981,7 +1050,13 @@
         "openmrs_entity_id": "",
         "type": "normal_edit_text",
         "edit_text_style": "bordered",
-        "edit_type": "number"
+        "edit_type": "number",
+        "relevance": {
+          "step3:respiratory_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "toaster21",
@@ -992,7 +1067,14 @@
         "text": "Woman has low oximetry. Refer urgently to the hospital!",
         "toaster_info_text": "Procedure:\n- Give oxygen\n- Refer urgently to hospital!",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "cardiac_exam",
@@ -1003,6 +1085,8 @@
         "label": "Cardiac exam",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "3",
         "options": [
           {
             "key": "1",
@@ -1018,99 +1102,8 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "cardiac_exam_abnormal",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "check_box",
-                "label": "Cardiac exam: abnormal",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "heart_murmur",
-                    "text": "Heart murmur",
-                    "value": false,
-                    "openmrs_entity_parent": "Cardiac examination (text)",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "weak_pulse",
-                    "text": "Weak pulse",
-                    "value": false,
-                    "openmrs_entity_parent": " Weak Pulse",
-                    "openmrs_entity_id": "124823"
-                  },
-                  {
-                    "key": "tachycardia",
-                    "text": "Tachycardia",
-                    "value": false,
-                    "openmrs_entity_parent": "Tachycardia",
-                    "openmrs_entity_id": "125063"
-                  },
-                  {
-                    "key": "bradycardia",
-                    "text": "Bradycardia",
-                    "value": false,
-                    "openmrs_entity_parent": "Bradycardia",
-                    "openmrs_entity_id": "147020"
-                  },
-                  {
-                    "key": "arrhythmia",
-                    "text": "Arrhythmia",
-                    "value": false,
-                    "openmrs_entity_parent": "Arrhythmias (Other cardiac arrhythmias)",
-                    "openmrs_entity_id": "665"
-                  },
-                  {
-                    "key": "cyanosis",
-                    "text": "Cyanosis",
-                    "value": false,
-                    "openmrs_entity_parent": "Cyanosis",
-                    "openmrs_entity_id": "143050"
-                  },
-                  {
-                    "key": "cold_sweats",
-                    "text": "Cold sweats",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "other",
-                    "text": "Other (specify)",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ]
-              },
-              {
-                "key": "cardiac_exam_abnormal_other",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "edit_text",
-                "hint": "Specify",
-                "v_regex": {
-                  "value": "[A-Za-z\\s\.\-]*",
-                  "err": "Please enter valid content"
-                },
-                "relevance": {
-                  "step3:cardiac_exam_abnormal": {
-                    "ex-checkbox": [
-                      {
-                        "or": [
-                          "other"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
+            "content_form": "cardiac_exam_sub_form",
+            "content_form_location": ""
           }
         ]
       },
@@ -1122,7 +1115,13 @@
         "type": "toaster_notes",
         "text": "Abnormal cardiac exam. Refer urgently to the hospital!",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "step3:cardiac_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "breast_exam",
@@ -1133,6 +1132,8 @@
         "label": "Breast exam",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "3",
         "options": [
           {
             "key": "1",
@@ -1148,92 +1149,8 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "breast_exam_abnormal",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "check_box",
-                "label": "Breast exam: abnormal",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "nodule",
-                    "text": "Nodule",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "discharge",
-                    "text": "Discharge",
-                    "value": false,
-                    "openmrs_entity": "Discharge from Nipple",
-                    "openmrs_entity_id": "142248"
-                  },
-                  {
-                    "key": "flushing",
-                    "text": "Flushing",
-                    "value": false,
-                    "openmrs_entity": "Flushing",
-                    "openmrs_entity_id": "140039"
-                  },
-                  {
-                    "key": "local_pain",
-                    "text": "Local pain",
-                    "value": false,
-                    "openmrs_entity": "Pain of Breast",
-                    "openmrs_entity_id": "131021"
-                  },
-                  {
-                    "key": "bleeding",
-                    "text": "Bleeding",
-                    "value": false,
-                    "openmrs_entity": "Bleeding from Breast",
-                    "openmrs_entity_id": "147236"
-                  },
-                  {
-                    "key": "increased_temperature",
-                    "text": "Increased temperature",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "other",
-                    "text": "Other (specify)",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ]
-              },
-              {
-                "key": "breast_exam_abnormal_other",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "edit_text",
-                "hint": "Specify",
-                "v_regex": {
-                  "value": "[A-Za-z\\s\.\-]*",
-                  "err": "Please enter valid content"
-                },
-                "relevance": {
-                  "step3:breast_exam_abnormal": {
-                    "ex-checkbox": [
-                      {
-                        "or": [
-                          "other"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
+            "content_form": "breast_exam_sub_form",
+            "content_form_location": ""
           }
         ]
       },
@@ -1245,7 +1162,13 @@
         "type": "toaster_notes",
         "text": "Abnormal breast exam. Refer for further investigation.",
         "text_color": "#D56900",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "step3:breast_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "abdominal_exam",
@@ -1256,6 +1179,8 @@
         "label": "Abdominal exam",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "3",
         "options": [
           {
             "key": "1",
@@ -1271,78 +1196,8 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "abdominal_exam_abnormal",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "check_box",
-                "label": "Abdominal exam: abnormal",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "mass_tumour",
-                    "text": "Mass/tumour",
-                    "value": false,
-                    "openmrs_entity": "NEOPLASM",
-                    "openmrs_entity_id": "115327"
-                  },
-                  {
-                    "key": "superficial_palpation_pain",
-                    "text": "Pain on superficial palpation",
-                    "value": false,
-                    "openmrs_entity": "Discharge from Nipple",
-                    "openmrs_entity_id": "142248"
-                  },
-                  {
-                    "key": "deep_palpation_pain",
-                    "text": "Pain on deep palpation",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "painful_decompression",
-                    "text": "Painful decompression",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "other",
-                    "text": "Other (specify)",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ]
-              },
-              {
-                "key": "abdominal_exam_abnormal_other",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "edit_text",
-                "hint": "Specify",
-                "v_regex": {
-                  "value": "[A-Za-z\\s\.\-]*",
-                  "err": "Please enter valid content"
-                },
-                "relevance": {
-                  "step3:abdominal_exam_abnormal": {
-                    "ex-checkbox": [
-                      {
-                        "or": [
-                          "other"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
+            "content_form": "abdominal_exam_sub_form",
+            "content_form_location": ""
           }
         ]
       },
@@ -1354,7 +1209,13 @@
         "type": "toaster_notes",
         "text": "Abnormal abdominal exam. Refer for further investigation.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "step3:abdominal_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "pelvic_exam",
@@ -1365,6 +1226,8 @@
         "label": "Pelvic exam (visual)",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "3",
         "options": [
           {
             "key": "1",
@@ -1380,141 +1243,8 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "pelvic_exam_abnormal",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "check_box",
-                "label": "Pelvic exam: abnormal",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "phy_vaginal_discharge",
-                    "text": "Physiological vaginal discharge",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "abnormal vaginal discharge",
-                    "text": "Abnormal vaginal discharge",
-                    "value": false,
-                    "openmrs_entity": "Vaginal Discharge Problem",
-                    "openmrs_entity_id": "123395"
-                  },
-                  {
-                    "key": "amniotic_fluid_evidence",
-                    "text": "Evidence of amniotic fluid",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "smelling_vaginal_discharge",
-                    "text": "Foul-smelling vaginal discharge",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "erythematous_papules",
-                    "text": "Clusters of erythematous papules",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "vesicles",
-                    "text": "Vesicles",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "genital_ulcer",
-                    "text": "Genital ulcer",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "genital_pain",
-                    "text": "Genital pain",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "femoral_lymphadenopathy",
-                    "text": "Tender bilateral inguinal and femoral lymphadenopathy",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "cervical_friability",
-                    "text": "Cervical friability",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "mucopurulent_ervicitis",
-                    "text": "Mucopurulent cervicitis",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "unilateral_lymphadenopathy",
-                    "text": "Tender unilateral lymphadenopathy",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "vaginal_discharge_curd_like",
-                    "text": "Curd-like vaginal discharge",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "other",
-                    "text": "Other (specify)",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ]
-              },
-              {
-                "key": "pelvic_exam_abnormal_other",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "",
-                "openmrs_entity_id": "",
-                "type": "edit_text",
-                "hint": "Specify",
-                "v_regex": {
-                  "value": "[A-Za-z\\s\.\-]*",
-                  "err": "Please enter valid content"
-                },
-                "relevance": {
-                  "step3:breast_exam_abnormal": {
-                    "ex-checkbox": [
-                      {
-                        "or": [
-                          "other"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
+            "content_form": "pelvic_exam_sub_form",
+            "content_form_location": ""
           }
         ]
       },
@@ -1526,7 +1256,13 @@
         "type": "toaster_notes",
         "text": "Abnormal pelvic exam. Refer for further investigation.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "step3:pelvic_exam": {
+            "type": "string",
+            "ex": "equalTo(., \"3\")"
+          }
+        }
       },
       {
         "key": "cervical_exam",
@@ -1537,6 +1273,8 @@
         "label": "Cervical exam done?",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "1",
         "options": [
           {
             "key": "1",
@@ -1544,59 +1282,14 @@
             "specify_info": "specify cm cervix dilated...",
             "specify_widget": "normal_edit_text",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "dilation_cm_label",
-                "type": "label",
-                "label_text_style": "bold",
-                "text": "How many centimetres (cm) dilated? ",
-                "text_color": "#000000",
-                "v_required": {
-                  "value": false
-                }
-              },
-              {
-                "key": "dilation_cm",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "Amount of cervical dilation ",
-                "openmrs_entity_id": "162261",
-                "type": "normal_edit_text",
-                "edit_text_style": "bordered",
-                "edit_type": "number",
-                "v_numeric": {
-                  "value": "true",
-                  "err": ""
-                },
-                "v_min": {
-                  "value": "0.1",
-                  "err": "Cervical dilation must be greater than 0"
-                },
-                "v_max": {
-                  "value": "10",
-                  "err": "Cervical dilation must be equal or less than 10"
-                },
-                "v_required": {
-                  "value": "false",
-                  "err": "Field cervical dilation is required"
-                }
-              }
-            ]
+            "content_form": "cervical_exam_sub_form",
+            "content_form_location": ""
           },
           {
             "key": "2",
             "text": "Not done"
           }
         ]
-      },
-      {
-        "key": "toaster26",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "toaster_notes",
-        "text": "Cervix is more than 2 cm dilated. Please check for other signs and symptoms of labour (if GA is 37 weeks or later) or pre-term labour and other related complications (if GA is less than 37 weeks).",
-        "text_color": "#E20000",
-        "toaster_type": "problem"
       },
       {
         "key": "oedema",
@@ -1607,6 +1300,8 @@
         "label": "Oedema present?",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "yes",
         "options": [
           {
             "key": "yes",
@@ -1614,52 +1309,8 @@
             "specify_info": "specify severity...",
             "specify_widget": "radio_button",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "oedema_severity",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "URINE PROTEIN (DIP STICK)",
-                "openmrs_entity_id": "1875",
-                "type": "native_radio",
-                "label": "Oedema severity",
-                "label_text_style": "bold",
-                "text_color": "#000000",
-                "options": [
-                  {
-                    "key": "one_plus",
-                    "text": "+",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "two_plus",
-                    "text": "++",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "three_plus",
-                    "text": "+++",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  },
-                  {
-                    "key": "four_plus",
-                    "text": "++++",
-                    "value": false,
-                    "openmrs_entity": "",
-                    "openmrs_entity_id": ""
-                  }
-                ],
-                "v_required": {
-                  "value": false,
-                  "err": "Please enter the result for the dipstick test."
-                }
-              }
-            ]
+            "content_form": "oedema_present_sub_form",
+            "content_form_location": ""
           },
           {
             "key": "no",
@@ -1797,6 +1448,8 @@
         "label": "Fetal heartbeat present?",
         "label_text_style": "bold",
         "text_color": "#000000",
+        "extra_rel": true,
+        "has_extra_rel": "yes" ,
         "options": [
           {
             "key": "yes",
@@ -1807,55 +1460,8 @@
             "specify_info": "specify fetal heart rate (bpm)...",
             "specify_widget": "normal_edit_text",
             "specify_info_color": "#8C8C8C",
-            "specify_content": [
-              {
-                "key": "fetal_heart_rate_label",
-                "type": "label",
-                "label_text_style": "bold",
-                "text": "Fetal heart rate (bpm)",
-                "text_color": "#000000",
-                "v_required": {
-                  "value": false
-                },
-                "relevance": {
-                  "step4:fetal_heartbeat": {
-                    "type": "string",
-                    "ex": "equalTo(., \"yes\")"
-                  }
-                }
-              },
-              {
-                "key": "fetal_heart_rate",
-                "openmrs_entity_parent": "",
-                "openmrs_entity": "Fetal heart rate",
-                "openmrs_entity_id": "1440",
-                "type": "normal_edit_text",
-                "edit_text_style": "bordered",
-                "edit_type": "number",
-                "v_required": {
-                  "value": "false",
-                  "err": "Please enter the fetal heart rate"
-                },
-                "v_min": {
-                  "value": "80",
-                  "err": "Fetal heartbeat must be equal or greater than 80"
-                },
-                "v_max": {
-                  "value": "200",
-                  "err": "Fetal heartbeat must be less than or equal to 200"
-                },
-                "v_numeric_integer": {
-                  "value": "true",
-                  "err": "Enter a valid sfh"
-                },
-                "relevance": {
-                  "step4:fetal_heartbeat": {
-                    "type": "string",
-                    "ex": "equalTo(., \"yes\")"
-                  }
-                }
-              }
-            ]
+            "content_form": "fetal_heartbeat_sub_form",
+            "content_form_location": ""
           },
           {
             "key": "no",
@@ -1897,9 +1503,10 @@
         "text_color": "#D56900",
         "toaster_type": "warning",
         "relevance": {
-          "step4:fetal_heart_rate": {
-            "type": "string",
-            "ex": "regex(.,\"^((1[1-5][0-9]|160))\")"
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
           }
         }
       },
@@ -1911,6 +1518,13 @@
         "text_color": "#000000",
         "v_required": {
           "value": true
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -1924,6 +1538,13 @@
         "v_required": {
           "value": "false",
           "err": "Please enter result for the second fetal heart rate"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
         }
       },
       {
@@ -1934,7 +1555,14 @@
         "type": "toaster_notes",
         "text": "Abnormal fetal heart rate. Refer to hospital.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "no_of_fetuses_label",
@@ -1990,7 +1618,6 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "",
         "options": [
           {
             "key": "no_of_fetuses_unknown",
