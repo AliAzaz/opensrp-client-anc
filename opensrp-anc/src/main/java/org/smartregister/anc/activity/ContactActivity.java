@@ -235,11 +235,9 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
         List<PartialContact> partialContacts = AncApplication.getInstance().getPartialContactRepository().getPartialContacts(getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID), contactNo);
 
         for (PartialContact partialContact : partialContacts) {
-            if (partialContact.getFormJson() != null) {
-                object = new JSONObject(partialContact.getFormJsonDraft() != null ? partialContact.getFormJsonDraft() : partialContact.getFormJson());
-                processRequiredStepsField(object);
-                partialForms.remove(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE));
-            }
+            object = new JSONObject(partialContact.getFormJsonDraft() != null ? partialContact.getFormJsonDraft() : partialContact.getFormJson());
+            processRequiredStepsField(object);
+            partialForms.remove(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE));
 
         }
 

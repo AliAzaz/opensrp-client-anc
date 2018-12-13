@@ -43,7 +43,6 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -85,7 +84,6 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
         loadContactSummaryData();
 
 
-
         gson = new Gson();
 
     }
@@ -100,7 +98,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
 
         findViewById(R.id.btn_profile_registration_info).setVisibility(View.GONE);
 
-        ImageButton backButton = findViewById(R.id.cancel_button);
+        ImageButton backButton = findViewById(R.id.undo_button);
         backButton.setImageResource(R.drawable.ic_arrow_back_white);
         backButton.setOnClickListener(this);
 
@@ -117,7 +115,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
         super.onClick(view);
 
         switch (view.getId()) {
-            case R.id.cancel_button:
+            case R.id.undo_button:
                 super.onBackPressed();
                 break;
 
@@ -263,7 +261,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
 
                         if (fieldKey != null && fieldValue != null) {
 
-                            facts.put(fieldKey, isList(fieldValue) ?  gson.fromJson(fieldValue, ArrayList.class) : fieldValue);
+                            facts.put(fieldKey, isList(fieldValue) ? gson.fromJson(fieldValue, ArrayList.class) : fieldValue);
                         }
 
 
@@ -289,7 +287,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
 
         for (PartialContact partialContact : partialContacts) {
             if (partialContact.getFormJson() != null) {
-                object = new JSONObject(partialContact.getFormJson());
+                object = new JSONObject(partialContact.getFormJsonDraft() != null ? partialContact.getFormJsonDraft() : partialContact.getFormJson());
                 processRequiredStepsField(object);
             }
 
@@ -371,7 +369,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
         return yaml.loadAll(inputStreamReader);
     }
 
-    protected PartialContactRepository getPartialContactRepository(){
+    protected PartialContactRepository getPartialContactRepository() {
         return AncApplication.getInstance().getPartialContactRepository();
     }
 }
