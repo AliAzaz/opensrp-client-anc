@@ -3,6 +3,18 @@
   "encounter_type": "Physical Exam",
   "entity_id": "",
   "relational_id": "",
+  "global": {
+    "prev_preg_comps": "['gestational_diabetes','macrosomia']",
+    "health_conditions": "['Hypertension','kidney_disease','autoimmune_disease']",
+    "urine_glucose":"two_plus",
+    "contact_no": 2,
+    "current_weight":134,
+    "pop_undernourish": 1,
+    "dm_in_preg":1,
+    "hb_results":10,
+    "gest_age":12,
+    "last_contact_date":"14-11-2018"
+  },
   "metadata": {
     "start": {
       "openmrs_entity_parent": "",
@@ -226,6 +238,90 @@
         }
       },
       {
+        "key": "gdm_risk",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "weight_cat",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "exp_weight_gain",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "weight_gain_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "weight_gain",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "tot_weight_gain",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
         "key": "toaster1",
         "openmrs_entity_parent": "",
         "openmrs_entity": "Body mass Index",
@@ -250,7 +346,14 @@
         "type": "toaster_notes",
         "text": "Average weight gain per week since last contact: {weight_gain} kg\n\nTotal weight gain in pregnancy so far: {tot_weight_gain} kg",
         "text_color": "#1199F9",
-        "toaster_type": "info"
+        "toaster_type": "info",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster3",
@@ -261,7 +364,14 @@
         "text": "Gestational diabetes mellitus (GDM) risk counseling",
         "text_color": "#D56900",
         "toaster_info_text": "Please provide appropriate counseling for GDM risk mitigation, including:\n- Reasserting dietary interventions\n- Reasserting physical activity during pregnancy",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster4",
@@ -285,7 +395,14 @@
         "text_color": "#1199F9",
         "toaster_type": "info",
         "toaster_info_text": "Increase daily energy and protein intake to reduce the risk of low-birth-weight neonates.",
-        "toaster_info_title": "Protein and Energy Sources Folder"
+        "toaster_info_title": "Protein and Energy Sources Folder",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster6",
@@ -296,7 +413,14 @@
         "text": "Balanced energy and protein dietary supplementation counseling",
         "text_color": "#1199F9",
         "toaster_type": "info",
-        "toaster_info_text": "Balanced energy and protein dietary supplementation is recommended for pregnant women to reduce the risk of stillbirths and small-for-gestational-age neonates."
+        "toaster_info_text": "Balanced energy and protein dietary supplementation is recommended for pregnant women to reduce the risk of stillbirths and small-for-gestational-age neonates.",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       }
     ]
   },
@@ -647,6 +771,20 @@
         }
       },
       {
+        "key": "severe_hypertension",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
         "key": "toaster9",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -673,7 +811,14 @@
         "text": "Severe hypertension! Refer urgently to hospital!",
         "toaster_info_text": "Woman has severe hypertension. If SBP is 160 mmHg or higher and/or DBP is 110 mmHg or higher, then refer urgently to the hospital for further investigation and management.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster11",
@@ -684,18 +829,28 @@
         "text": "Symptom(s) of severe pre-eclampsia! Refer urgently to hospital!",
         "toaster_info_text": "Woman has hypertension. If she is experiencing a symptom of severe pre-eclampsia, then refer urgently to the hospital for further investigation and management.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
-        "key": "toaster12",
+        "key": "severe_preeclampsia",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
-        "type": "toaster_notes",
-        "text": "Symptom(s) of severe pre-eclampsia! Refer urgently to hospital!",
-        "toaster_info_text": "Woman has hypertension. If she is experiencing a symptom of severe pre-eclampsia, then refer urgently to the hospital for further investigation and management.",
-        "text_color": "#E20000",
-        "toaster_type": "problem"
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster13",
@@ -706,7 +861,28 @@
         "text": "Severe pre-eclampsia diagnosis! Provide urgent treatment and refer to hospital!",
         "toaster_info_text": "Woman has severe pre-eclampsia - SBP of 160 mmHg or above and/or DBP of 110 mmHg or above and proteinuria 3+ OR woman has SBP of 140 mmHg or above and/or DBP of 90 mmHg or above and proteinuria 2+ with at least one symptom of severe pre-eclampsia.\n\nProcedure:\n- Give magnesium sulphate\n- Give appropriate anti-hypertensives\n- Revise the birth plan\n- Refer urgently to hospital!",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "preeclampsia",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster14",
@@ -717,7 +893,14 @@
         "text": "Pre-eclampsia diagnosis! Refer to hospital and revise birth plan.",
         "toaster_info_text": "Woman has pre-eclampsia - SBP of 140 mmHg or above and/or DBP of 90 mmHg or above and proteinuria 2+ and no symptom of severe pre-eclampsia.\n\nProcedure:\n- Refer to hospital\n- Revise the birth plan",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       }
     ]
   },
@@ -960,14 +1143,28 @@
         "text_color": "#000000",
         "options": [
           {
-            "key": "1",
+            "key": "yes",
             "text": "Yes"
           },
           {
-            "key": "0",
+            "key": "no",
             "text": "No"
           }
         ]
+      },
+      {
+        "key": "anaemic",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "toaster19",
@@ -978,7 +1175,14 @@
         "text": "Anaemia diagnosis! Haemoglobin (Hb) test recommended.",
         "toaster_info_text": "Anaemia - Hb level less than 11 in first or third trimester or Hb level less than 10.5 in second trimester.\n\nOR\n\nNo Hb test result recorded, but woman has pallor.",
         "text_color": "#E20000",
-        "toaster_type": "problem"
+        "toaster_type": "problem",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "respiratory_exam",
@@ -1006,8 +1210,7 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "content_form": "respiratory_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "respiratory_exam_sub_form"
           }
         ]
       },
@@ -1102,8 +1305,7 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "content_form": "cardiac_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "cardiac_exam_sub_form"
           }
         ]
       },
@@ -1149,8 +1351,7 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "content_form": "breast_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "breast_exam_sub_form"
           }
         ]
       },
@@ -1196,8 +1397,7 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "content_form": "abdominal_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "abdominal_exam_sub_form"
           }
         ]
       },
@@ -1243,8 +1443,7 @@
             "specify_info": "specify...",
             "specify_widget": "check_box",
             "specify_info_color": "#8C8C8C",
-            "content_form": "pelvic_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "pelvic_exam_sub_form"
           }
         ]
       },
@@ -1282,8 +1481,7 @@
             "specify_info": "specify cm cervix dilated...",
             "specify_widget": "normal_edit_text",
             "specify_info_color": "#8C8C8C",
-            "content_form": "cervical_exam_sub_form",
-            "content_form_location": ""
+            "content_form": "cervical_exam_sub_form"
           },
           {
             "key": "2",
@@ -1309,8 +1507,7 @@
             "specify_info": "specify severity...",
             "specify_widget": "radio_button",
             "specify_info_color": "#8C8C8C",
-            "content_form": "oedema_present_sub_form",
-            "content_form_location": ""
+            "content_form": "oedema_present_sub_form"
           },
           {
             "key": "no",
@@ -1460,8 +1657,7 @@
             "specify_info": "specify fetal heart rate (bpm)...",
             "specify_widget": "normal_edit_text",
             "specify_info_color": "#8C8C8C",
-            "content_form": "fetal_heartbeat_sub_form",
-            "content_form_location": ""
+            "content_form": "fetal_heartbeat_sub_form"
           },
           {
             "key": "no",
@@ -1627,6 +1823,20 @@
         ]
       },
       {
+        "key": "preeclampsia_risk",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "hidden",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-calculations-rules.yml"
+            }
+          }
+        }
+      },
+      {
         "key": "toaster30",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -1635,7 +1845,14 @@
         "text": "Pre-eclampsia risk counseling",
         "text_color": "#D56900",
         "toaster_info_text": "The use of aspirin after 12 weeks gestation is recommended as well as calcium if low dietary intake area. Please also provide counseling. ",
-        "toaster_type": "warning"
+        "toaster_type": "warning",
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "physical-exam-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "fetal_presentation",
