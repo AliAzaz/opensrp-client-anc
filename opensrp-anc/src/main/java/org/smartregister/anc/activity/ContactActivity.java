@@ -48,6 +48,10 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
         }
 
         initializeMainContactContainers();
+
+        //Enable/Diable FinalizeButton
+        findViewById(R.id.finalize_contact).setEnabled(getRequiredCountTotal() > 0 ? true : false); //TO REMOVE (SWITCH BACK BOOLEAN VALUES )
+
     }
 
     private void initializeMainContactContainers() {
@@ -123,7 +127,7 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
             contactAdapter.notifyDataSetChanged();
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }
@@ -210,14 +214,6 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
 
                                 requiredFieldsMap.put(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE), requiredFieldCount);
                             }
-
-//Total Count
-                            Integer requiredFieldCount = requiredFieldsMap.get(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE) + Constants.SUFFIX.TOTAL_COUNT);
-
-                            requiredFieldCount = requiredFieldCount == null ? 1 : ++requiredFieldCount;
-
-                            requiredFieldsMap.put(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE) + Constants.SUFFIX.TOTAL_COUNT, requiredFieldCount);
-
                         }
 
                     }
@@ -235,10 +231,11 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
         List<PartialContact> partialContacts = AncApplication.getInstance().getPartialContactRepository().getPartialContacts(getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID), contactNo);
 
         for (PartialContact partialContact : partialContacts) {
-            object = new JSONObject(partialContact.getFormJsonDraft() != null ? partialContact.getFormJsonDraft() : partialContact.getFormJson());
-            processRequiredStepsField(object);
-            partialForms.remove(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE));
-
+            if (partialContact.getFormJsonDraft() != null || partialContact.getFormJson() != null) {
+                object = new JSONObject(partialContact.getFormJsonDraft() != null ? partialContact.getFormJsonDraft() : partialContact.getFormJson());
+                processRequiredStepsField(object);
+                partialForms.remove(object.getString(Constants.JSON_FORM_KEY.ENCOUNTER_TYPE));
+            }
         }
 
         for (String formEventType : partialForms) {
@@ -249,5 +246,15 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
             }
 
         }
+    }
+
+    private int getRequiredCountTotal() {
+
+        int count = 0;
+        for (Map.Entry<String, Integer> entry : requiredFieldsMap.entrySet()) {
+            count += entry.getValue();
+        }
+
+        return count;
     }
 }
