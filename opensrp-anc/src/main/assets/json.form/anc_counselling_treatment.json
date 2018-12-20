@@ -63,22 +63,7 @@
     "pop_hiv_incidence": 1,
     "partner_hiv_status": "",
     "hiv_test_partner_status": "",
-    "age": 15,
-    "fetal_presentation": "",
-    "c_sections": "",
-    "no_of_fetuses": "",
-    "rh_factor": "",
-    "urine_culture": "",
-    "site_ipv_assess": "",
-    "pop_anaemia_40": "",
-    "pop_anaemia_20": "",
-    "ifa_effects": "",
-    "pop_helminth": "",
-    "pop_malaria": "",
-    "medications": "",
-    "tt_immun_status": "",
-    "flu_immun_status": "",
-    "pop_vita": ""
+    "age": 15
   },
   "metadata": {
     "start": {
