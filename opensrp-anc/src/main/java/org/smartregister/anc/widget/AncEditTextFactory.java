@@ -28,7 +28,6 @@ import java.util.List;
  * Created by ndegwamartin on 30/06/2018.
  */
 public class AncEditTextFactory extends EditTextFactory {
-
     private ImageView imageView;
 
     @Override
@@ -36,6 +35,7 @@ public class AncEditTextFactory extends EditTextFactory {
         super.attachLayout(stepName, context, formFragment, jsonObject, editText, imageView);
         this.imageView = imageView;
     }
+
 
     @Override
     public List<View> getViewsFromJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, CommonListener listener, boolean popup) throws Exception {
@@ -45,8 +45,7 @@ public class AncEditTextFactory extends EditTextFactory {
             RelativeLayout rootLayout = getRootLayout(context);
             final MaterialEditText editText = rootLayout.findViewById(R.id.edit_text);
 
-
-            attachLayout(stepName, context, formFragment, jsonObject, editText,this.imageView);
+            attachLayout(stepName, context, formFragment, jsonObject, editText, this.imageView);
 
             JSONArray canvasIds = new JSONArray();
             rootLayout.setId(ViewUtil.generateViewId());
@@ -90,7 +89,7 @@ public class AncEditTextFactory extends EditTextFactory {
 
             return views;
         } else {
-            return super.getViewsFromJson(stepName, context, formFragment, jsonObject, listener,popup);
+            return super.getViewsFromJson(stepName, context, formFragment, jsonObject, listener, popup);
         }
 
     }
