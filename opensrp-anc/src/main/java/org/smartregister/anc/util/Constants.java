@@ -7,6 +7,7 @@ import org.smartregister.anc.BuildConfig;
  */
 
 public abstract class Constants {
+
     public static final String SQLITE_DATE_TIME_FORMAT = "yyyy-MM-dd";
     public static final String CONTACT_DATE_FORMAT = "dd/MM/yyyy";
     public static final String CONTACT_SUMMARY_DATE_FORMAT = "dd MMMM yyyy";
@@ -141,6 +142,17 @@ public abstract class Constants {
 
     public static class SUFFIX {
         public static final String TOTAL_COUNT = "_total_count";
+
+    }
+
+
+    public static final String ANC_RADIO_BUTTON = "anc_radio_button";
+
+    public static class ANC_RADIO_BUTTON_OPTION_TYPES {
+        public static final String DONE_TODAY = "done_today";
+        public static final String DONE_EARLIER = "done_earlier";
+        public static final String ORDERED = "ordered";
+        public static final String NOT_DONE = "not_done";
 
     }
 

@@ -1630,7 +1630,7 @@
             "openmrs_entity_parent": "",
             "openmrs_entity": "Hypertension",
             "openmrs_entity_id": "117399",
-            "key": "Hypertension",
+            "key": "hypertension",
             "text": "Hypertension"
           },
           {
