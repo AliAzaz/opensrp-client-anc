@@ -67,18 +67,18 @@
     "fetal_presentation": "",
     "c_sections": "",
     "no_of_fetuses": "",
-    "rh_factor":"",
-    "urine_culture":"",
-    "site_ipv_assess":"",
-    "pop_anaemia_40":"",
-    "pop_anaemia_20":"",
-    "ifa_effects":"",
-    "pop_helminth":"",
-    "pop_malaria":"",
-    "medications":"",
-    "tt_immun_status":"",
-    "flu_immun_status":"",
-    "pop_vita":""
+    "rh_factor": "",
+    "urine_culture": "",
+    "site_ipv_assess": "",
+    "pop_anaemia_40": "",
+    "pop_anaemia_20": "",
+    "ifa_effects": "",
+    "pop_helminth": "",
+    "pop_malaria": "",
+    "medications": "",
+    "tt_immun_status": "",
+    "flu_immun_status": "",
+    "pop_vita": ""
   },
   "metadata": {
     "start": {
@@ -140,21 +140,7 @@
         "type": "toaster_notes",
         "text": "Danger sign(s): {danger_signs}",
         "toaster_info_text": "Procedure:\n\n- Manage according to the local protocol for rapid assessment and management\n\n- Refer urgently to hospital!",
-        "toaster_type": "problem",
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "ct_relevance_rules.yml"
-            }
-          }
-        },
-        "calculation": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "ct_calculation_rules.yml"
-            }
-          }
-        }
+        "toaster_type": "problem"
       },
       {
         "key": "severe_hypertension_toaster",
@@ -164,21 +150,7 @@
         "type": "toaster_notes",
         "text": "Severe hypertension: {bp_systolic_repeat}/{bp_diastolic_repeat} mmHg",
         "toaster_info_text": "Procedure:\n\n- Refer urgently to hospital for further investigation and management!",
-        "toaster_type": "problem",
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "ct_relevance_rules.yml"
-            }
-          }
-        },
-        "calculation": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "ct_calculation_rules.yml"
-            }
-          }
-        }
+        "toaster_type": "problem"
       },
       {
         "key": "hypertension_pre_eclampsia_toaster",
@@ -534,21 +506,24 @@
             "text": "Woman refused",
             "openmrs_entity_parent": "",
             "openmrs_entity": "Student",
-            "openmrs_entity_id": "159465"
+            "openmrs_entity_id": "159465",
+            "value":false
           },
           {
             "key": "not_necessary",
             "text": "Not necessary",
             "openmrs_entity_parent": "",
             "openmrs_entity": "Unemployed",
-            "openmrs_entity_id": "123801"
+            "openmrs_entity_id": "123801",
+            "value":false
           },
           {
             "key": "other",
             "text": "Other (specify)",
             "openmrs_entity_parent": "",
             "openmrs_entity": "",
-            "openmrs_entity_id": ""
+            "openmrs_entity_id": "",
+            "value":false
           }
         ],
         "v_required": {

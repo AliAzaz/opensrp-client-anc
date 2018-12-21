@@ -33,6 +33,7 @@ public class AncEditTextFactory extends EditTextFactory {
 
     @Override
     public void attachLayout(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editable) throws Exception {
+
         super.attachLayout(stepName, context, formFragment, jsonObject, editText, editable);
         this.editable = editable;
     }
@@ -46,7 +47,8 @@ public class AncEditTextFactory extends EditTextFactory {
 
             RelativeLayout rootLayout = getRootLayout(context);
             final MaterialEditText editText = rootLayout.findViewById(R.id.edit_text);
-            attachLayout(stepName, context, formFragment, jsonObject, editText, editable);
+
+            attachLayout(stepName, context, formFragment, jsonObject, editText,editable);
 
             JSONArray canvasIds = new JSONArray();
             rootLayout.setId(ViewUtil.generateViewId());
@@ -90,7 +92,9 @@ public class AncEditTextFactory extends EditTextFactory {
 
             return views;
         } else {
+
             return super.getViewsFromJson(stepName, context, formFragment, jsonObject, listener, popup);
+
         }
 
     }
