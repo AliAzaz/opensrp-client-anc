@@ -14,7 +14,6 @@ import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.rules.RuleConstant;
-import com.vijay.jsonwizard.views.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -472,7 +471,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
                 LinearLayout linearLayout = refreshExpansionPanelEvent.getLinearLayout();
                 ExpansionHeader layoutHeader = (ExpansionHeader) linearLayout.getChildAt(0);
                 ImageView status = layoutHeader.findViewById(R.id.statusImageView);
-                changeRecycler(values,status);
+                changeRecycler(values, status);
                 ExpansionLayout contentLayout = (ExpansionLayout) linearLayout.getChildAt(1);
                 RecyclerView recyclerView = contentLayout.findViewById(R.id.contentRecyclerView);
                 ExpansionWidgetAdapter adapter = (ExpansionWidgetAdapter) recyclerView.getAdapter();
@@ -488,8 +487,10 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     private void changeRecycler(List<String> values, ImageView status) throws JSONException {
         JSONArray list = new JSONArray(values);
         for (int k = 0; k < list.length(); k++) {
-            String valueDisplay = list.getString(k).split(":")[1];
-            formUtils.changeIcon(status, valueDisplay, getApplicationContext());
+            String[] valueDisplay = list.getString(k).split(":");
+            if (valueDisplay.length > 1) {
+                formUtils.changeIcon(status, valueDisplay[1], getApplicationContext());
+            }
         }
     }
 }

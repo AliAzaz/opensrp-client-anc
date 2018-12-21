@@ -190,14 +190,15 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
     public void loadGlobals(Contact contact) {
         List<String> contactGlobals = formGlobalKeys.get(contact.getFormName());
 
-        Map<String, String> map = new HashMap<>();
-        for (String cg : contactGlobals) {
-            if (formGlobalValues.containsKey(cg)) {
-                map.put(cg, formGlobalValues.get(cg));
+        if (contactGlobals != null) {
+            Map<String, String> map = new HashMap<>();
+            for (String cg : contactGlobals) {
+                if (formGlobalValues.containsKey(cg)) {
+                    map.put(cg, formGlobalValues.get(cg));
+                }
             }
+            contact.setGlobals(map);
         }
-        contact.setGlobals(map);
-
     }
 
     @Override
@@ -209,7 +210,7 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
     protected void createContacts() {
         try {
 
-            eventToFileMap.put(getString(R.string.quick_check), "anc_quick_check");
+            eventToFileMap.put(getString(R.string.quick_check), Constants.ANC_QUICK_CHECK);
             eventToFileMap.put(getString(R.string.profile), Constants.JSON_FORM.ANC_PROFILE);
             eventToFileMap.put(getString(R.string.physical_exam), Constants.JSON_FORM.ANC_PHYSICAL_EXAM);
             eventToFileMap.put(getString(R.string.tests), Constants.JSON_FORM.ANC_TEST);
@@ -318,10 +319,14 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
         Iterable<Object> contactGlobals = readYaml(FilePath.FILE.CONTACT_GLOBALS);
 
         for (Object ruleObject : contactGlobals) {
-            Map<String, Object> map = ((Map<String, Object>) ruleObject);
+            if (ruleObject != null) {
+                Map<String, Object> map = ((Map<String, Object>) ruleObject);
+                if (map != null) {
+                    formGlobalKeys.put(map.get(Constants.FORM).toString(), (List<String>) map.get(JsonFormConstants.FIELDS));
+                    globalKeys.addAll((List<String>) map.get(JsonFormConstants.FIELDS));
+                }
+            }
 
-            formGlobalKeys.put(map.get(Constants.FORM).toString(), (List<String>) map.get(JsonFormConstants.FIELDS));
-            globalKeys.addAll((List<String>) map.get(JsonFormConstants.FIELDS));
         }
     }
 

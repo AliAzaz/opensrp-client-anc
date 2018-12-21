@@ -73,7 +73,7 @@
       "expanded": "false",
       "max_date": "today",
       "relevance": {
-        "step1:tb_screening_status": {
+        "step1:other_test": {
           "ex-checkbox": [
             {
               "or": [
@@ -98,7 +98,7 @@
       "hint": "Test result?  *",
       "edit_type": "name",
       "relevance": {
-        "step1:tb_screening_status": {
+        "step1:other_test": {
           "ex-checkbox": [
             {
               "or": [

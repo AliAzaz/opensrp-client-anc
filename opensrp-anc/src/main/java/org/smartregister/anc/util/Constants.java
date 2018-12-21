@@ -16,6 +16,7 @@ public abstract class Constants {
     public static final int DELIVERY_DATE_WEEKS = 40;
     public static final String EXPANSION_PANEL = "expansion_panel";
     public static final String ANC_RADIO_BUTTON = "anc_radio_button";
+    public static final String ANC_QUICK_CHECK = "anc_quick_check";
 
     public static class ANC_RADIO_BUTTON_OPTION_TYPES {
         public static final String DONE_TODAY = "done_today";
