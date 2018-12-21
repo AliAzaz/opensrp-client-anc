@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.customviews.GenericPopupDialog;
 import com.vijay.jsonwizard.interfaces.JsonApi;
+import com.vijay.jsonwizard.utils.FormUtils;
 import com.vijay.jsonwizard.utils.SecondaryValueModel;
 import com.vijay.jsonwizard.utils.Utils;
 
@@ -29,6 +32,7 @@ import org.json.JSONObject;
 import org.smartregister.anc.R;
 import org.smartregister.anc.contract.AncGenericDialogInterface;
 import org.smartregister.anc.contract.JsonApiInterface;
+import org.smartregister.anc.event.RefreshExpansionPanelEvent;
 import org.smartregister.anc.interactor.ContactJsonFormInteractor;
 import org.smartregister.anc.model.AccordionValuesModel;
 import org.smartregister.anc.util.Constants;
@@ -52,6 +56,9 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
     private JsonApi jsonApi;
     private JsonApiInterface ancJsonApi;
     private Context context;
+    private String header;
+    protected Toolbar mToolbar;
+    private  LinearLayout linearLayout;
 
 
     @Override
@@ -88,7 +95,7 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
 
     @Override
     protected void passData() {
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             onDataPass(popAssignedValue, getParentKey(), getStepName(), getChildKey());
         } else {
             onGenericDataPass(getPopAssignedValue(), getParentKey(), getStepName(), getChildKey());
@@ -111,7 +118,7 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
     public void onResume() {
         super.onResume();
         jsonApi.refreshSkipLogic(null, null, true);
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -131,7 +138,12 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
 
         createSecondaryValuesMap();
         if (!TextUtils.isEmpty(getFormIdentity())) {
-            JSONObject subForm = getSubFormJson(getFormIdentity(), getFormLocation(), context);
+            JSONObject subForm = null;
+            try {
+                subForm = FormUtils.getSubFormJson(getFormIdentity(), getFormLocation(), context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (subForm != null) {
                 try {
                     if (subForm.has(JsonFormConstants.CONTENT_FORM)) {
@@ -154,9 +166,13 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.fragment_generic_dialog, container, false);
-
+            mToolbar = dialogView.findViewById(R.id.generic_toolbar);
+            TextView toolBar = mToolbar.findViewById(R.id.txt_title_label);
+            if (!TextUtils.isEmpty(header)) {
+                toolBar.setText(header);
+            }
             AppCompatImageButton cancelButton;
             Button okButton;
 
@@ -240,9 +256,47 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
         }
     }
 
+    protected void addValues(JSONObject item, Map<String, AccordionValuesModel> secondaryValueModel) {
+        JSONObject valueObject;
+        JSONArray secondaryValuesArray = new JSONArray();
+        AccordionValuesModel secondaryValue;
+        for (Object object : secondaryValueModel.entrySet()) {
+            Map.Entry pair = (Map.Entry) object;
+            secondaryValue = (AccordionValuesModel) pair.getValue();
+            valueObject = createSecValues(secondaryValue);
+            secondaryValuesArray.put(valueObject);
+        }
+        try {
+            item.put(JsonFormConstants.VALUE, secondaryValuesArray);
+            setNewSelectedValues(secondaryValuesArray);
+            org.smartregister.anc.util.Utils.postEvent(new RefreshExpansionPanelEvent(secondaryValuesArray,linearLayout));
+        } catch (Exception e) {
+            Log.i(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    private JSONObject createSecValues(AccordionValuesModel valuesModel) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            String key = valuesModel.getKey();
+            String type = valuesModel.getType();
+            String label = valuesModel.getLabel();
+            JSONArray values = valuesModel.getValues();
+
+            jsonObject.put(JsonFormConstants.KEY, key);
+            jsonObject.put(JsonFormConstants.TYPE, type);
+            jsonObject.put(JsonFormConstants.LABEL, label);
+            jsonObject.put(JsonFormConstants.VALUES, values);
+        } catch (Exception e) {
+            Log.i(TAG, Log.getStackTraceString(e));
+
+        }
+        return jsonObject;
+    }
+
     @Override
     protected void addFormValues(JSONArray jsonArray) {
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject;
                 try {
@@ -312,28 +366,11 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
         return item;
     }
 
-    protected void addValues(JSONObject item, Map<String, AccordionValuesModel> secondaryValueModel) {
-        JSONObject valueObject;
-        JSONArray secondaryValuesArray = new JSONArray();
-        AccordionValuesModel secondaryValue;
-        for (Object object : secondaryValueModel.entrySet()) {
-            Map.Entry pair = (Map.Entry) object;
-            secondaryValue = (AccordionValuesModel) pair.getValue();
-            valueObject = createSecValues(secondaryValue);
-            secondaryValuesArray.put(valueObject);
-        }
-        try {
-            item.put(JsonFormConstants.VALUE, secondaryValuesArray);
-            setNewSelectedValues(secondaryValuesArray);
-        } catch (Exception e) {
-            Log.i(TAG, Log.getStackTraceString(e));
-        }
-    }
 
     @Override
     protected void createSecondaryValuesMap() {
         JSONObject jsonObject;
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             if (getSecondaryValues() != null) {
                 for (int i = 0; i < getSecondaryValues().length(); i++) {
                     try {
@@ -355,24 +392,7 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
 
     }
 
-    private JSONObject createSecValues(AccordionValuesModel valuesModel) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            String key = valuesModel.getKey();
-            String type = valuesModel.getType();
-            String label = valuesModel.getLabel();
-            JSONArray values = valuesModel.getValues();
 
-            jsonObject.put(JsonFormConstants.KEY, key);
-            jsonObject.put(JsonFormConstants.TYPE, type);
-            jsonObject.put(JsonFormConstants.LABEL, label);
-            jsonObject.put(JsonFormConstants.VALUES, values);
-        } catch (Exception e) {
-            Log.i(TAG, Log.getStackTraceString(e));
-
-        }
-        return jsonObject;
-    }
 
     @Override
     public void addSelectedValues(Map<String, String> newValue) {
@@ -407,8 +427,8 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
     protected void createSecondaryValues(String key, String labelType, String value) {
         JSONArray values = new JSONArray();
         values.put(value);
-        String[] string = getWidgetLabel(labelType);
-        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(JsonFormConstants.NATIVE_ACCORDION)) {
+        String[] string = splitText(labelType, ";");
+        if (!TextUtils.isEmpty(getWidgetType()) && getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             if (string.length > 1) {
                 String type = string[0];
                 String label = string[1];
@@ -466,8 +486,8 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
 
             for (int k = 0; k < list.size(); k++) {
                 String value = list.get(k);
-                String[] splitValues = value.split(":");
-                String[] currentValues = currentValue.split(":");
+                String[] splitValues = splitText(value, ":");
+                String[] currentValues = splitText(currentValue, ":");
                 if (splitValues.length == 3 && currentValues.length == 3 && splitValues[0].equals(currentValues[0]) && splitValues[1].equals(currentValues[1]) && currentValues[2].equals("false")) {
                     list.remove(k);
                 }
@@ -480,7 +500,15 @@ public class AncGenericDialogPopup extends GenericPopupDialog implements AncGene
         return values;
     }
 
-    private String[] getWidgetLabel(String type) {
-        return type.split(";");
+    private String[] splitText(String text, String spliter) {
+        return text.split(spliter);
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public void setLinearLayout(LinearLayout linearLayout) {
+        this.linearLayout = linearLayout;
     }
 }

@@ -3,24 +3,37 @@ package org.smartregister.anc.activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.github.florent37.expansionpanel.ExpansionHeader;
+import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.rules.RuleConstant;
+import com.vijay.jsonwizard.views.CustomTextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.anc.R;
+import org.smartregister.anc.adapter.ExpansionWidgetAdapter;
 import org.smartregister.anc.application.AncApplication;
 import org.smartregister.anc.contract.AncGenericDialogInterface;
 import org.smartregister.anc.contract.JsonApiInterface;
 import org.smartregister.anc.domain.Contact;
+import org.smartregister.anc.event.RefreshExpansionPanelEvent;
 import org.smartregister.anc.fragment.ContactJsonFormFragment;
 import org.smartregister.anc.model.PartialContact;
 import org.smartregister.anc.util.Constants;
 import org.smartregister.anc.util.ContactJsonFormUtils;
+import org.smartregister.anc.util.Utils;
 import org.smartregister.anc.view.AncGenericDialogPopup;
 
 import java.io.Serializable;
@@ -39,6 +52,8 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     private ProgressDialog progressDialog;
     private AncGenericDialogInterface genericDialogInterface;
     private ContactJsonFormUtils formUtils = new ContactJsonFormUtils();
+    private Utils utils = new Utils();
+    private String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +181,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     protected JSONArray fetchFields(JSONObject parentJson, Boolean popup) {
         JSONArray fields = new JSONArray();
         if (genericDialogInterface != null && genericDialogInterface.getWidgetType() != null && genericDialogInterface.getWidgetType()
-                .equals(JsonFormConstants.NATIVE_ACCORDION)) {
+                .equals(Constants.EXPANSION_PANEL)) {
             try {
                 if (parentJson.has(JsonFormConstants.SECTIONS) && parentJson
                         .get(JsonFormConstants.SECTIONS) instanceof JSONArray) {
@@ -215,7 +230,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     protected JSONArray specifyFields(JSONObject parentJson) {
         JSONArray fields = new JSONArray();
         if (genericDialogInterface != null && genericDialogInterface.getWidgetType() != null && genericDialogInterface.getWidgetType()
-                .equals(JsonFormConstants.NATIVE_ACCORDION)) {
+                .equals(Constants.EXPANSION_PANEL)) {
             try {
                 if (parentJson.has(JsonFormConstants.CONTENT_FORM)) {
                     if (getExtraFieldsWithValues() != null) {
@@ -333,7 +348,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     private String getWidgetLabel(JSONObject jsonObject) throws JSONException {
         String label = "";
         String widgetType = jsonObject.getString(JsonFormConstants.TYPE);
-        if (!TextUtils.isEmpty(widgetType) && genericDialogInterface.getWidgetType().equals(Constants.NATIVE_ACCORDION)) {
+        if (!TextUtils.isEmpty(widgetType) && genericDialogInterface.getWidgetType().equals(Constants.EXPANSION_PANEL)) {
             switch (widgetType) {
                 case JsonFormConstants.EDIT_TEXT:
                     label = jsonObject.optString(JsonFormConstants.HINT, "");
@@ -353,7 +368,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     public Map<String, String> getValueFromAddressCore(JSONObject object) throws JSONException {
         Map<String, String> result = new HashMap<>();
         if (genericDialogInterface != null && genericDialogInterface.getWidgetType() != null && genericDialogInterface.getWidgetType()
-                .equals(JsonFormConstants.NATIVE_ACCORDION)) {
+                .equals(Constants.EXPANSION_PANEL)) {
             if (object != null) {
                 switch (object.getString(JsonFormConstants.TYPE)) {
                     case JsonFormConstants.CHECK_BOX:
@@ -368,7 +383,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
                                     result.put(options.getJSONObject(j).getString(JsonFormConstants.KEY), options.getJSONObject(j).getString(JsonFormConstants.VALUE));
                                 }
                             } else {
-                                //Log.e(TAG, "option for Key " + options.getJSONObject(j).getString(JsonFormConstants.KEY) + " has NO value");
+                                Log.e(TAG, "option for Key " + options.getJSONObject(j).getString(JsonFormConstants.KEY) + " has NO value");
                             }
 
                             //Backward compatibility Fix
@@ -422,7 +437,7 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
                         }
                     }
                 } else {
-                    //Log.e(TAG, "option for Key " + jsonArray.getJSONObject(j).getString(JsonFormConstants.KEY) + " has NO value");
+                    Log.e(TAG, "option for Key " + jsonArray.getJSONObject(j).getString(JsonFormConstants.KEY) + " has NO value");
                 }
             }
         } else {
@@ -435,5 +450,46 @@ public class ContactJsonFormActivity extends JsonFormActivity implements JsonApi
     @Override
     public void setGenericPopup(AncGenericDialogPopup context) {
         genericDialogInterface = context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshExpansionPanel(RefreshExpansionPanelEvent refreshExpansionPanelEvent) {
+        if (refreshExpansionPanelEvent != null) {
+            try {
+                List<String> values = utils.createExpansionPanelChildren(refreshExpansionPanelEvent.getValues());
+                LinearLayout linearLayout = refreshExpansionPanelEvent.getLinearLayout();
+                ExpansionHeader layoutHeader = (ExpansionHeader) linearLayout.getChildAt(0);
+                ImageView status = layoutHeader.findViewById(R.id.statusImageView);
+                changeRecycler(values,status);
+                ExpansionLayout contentLayout = (ExpansionLayout) linearLayout.getChildAt(1);
+                RecyclerView recyclerView = contentLayout.findViewById(R.id.contentRecyclerView);
+                ExpansionWidgetAdapter adapter = (ExpansionWidgetAdapter) recyclerView.getAdapter();
+                adapter.setExpansionWidgetValues(values);
+                adapter.notifyDataSetChanged();
+                values.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void changeRecycler(List<String> values, ImageView status) throws JSONException {
+        JSONArray list = new JSONArray(values);
+        for (int k = 0; k < list.length(); k++) {
+            String valueDisplay = list.getString(k).split(":")[1];
+            formUtils.changeIcon(status, valueDisplay, getApplicationContext());
+        }
     }
 }

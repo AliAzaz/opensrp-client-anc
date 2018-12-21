@@ -14,7 +14,7 @@ public abstract class Constants {
     public static final String GLOBAL_IDENTIFIER = "identifier";
     public static final String ANC_ID = "ANC_ID";
     public static final int DELIVERY_DATE_WEEKS = 40;
-    public static final String NATIVE_ACCORDION = "native_accordion";
+    public static final String EXPANSION_PANEL = "expansion_panel";
     public static final String ANC_RADIO_BUTTON = "anc_radio_button";
 
     public static class ANC_RADIO_BUTTON_OPTION_TYPES {
@@ -144,4 +144,14 @@ public abstract class Constants {
         public static final String CONTACT_SUMMARY = "contact-summary.yml";
 
     }
+
+
+    public static class ANC_RADIO_BUTTON_OPTION_TEXT {
+        public static final String DONE_TODAY = "Done today";
+        public static final String DONE_EARLIER = "Done earlier";
+        public static final String ORDERED = "Ordered";
+        public static final String NOT_DONE = "Not done";
+
+    }
+
 }
