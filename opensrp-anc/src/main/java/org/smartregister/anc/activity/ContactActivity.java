@@ -198,7 +198,10 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
                 }
             }
             contact.setGlobals(map);
+
+            map.put("contact_no", contactNo.toString());
         }
+
     }
 
     @Override
@@ -263,9 +266,9 @@ public class ContactActivity extends BaseContactActivity implements ContactContr
                             }
                         }
 
-                        if (fieldObject.has("content_form")) {
+                        if (fieldObject.has(JsonFormConstants.CONTENT_FORM)) {
                             try {
-                                JSONObject subFormJson = Utils.getSubFormJson(fieldObject.getString("content_form"), "", this);
+                                JSONObject subFormJson = com.vijay.jsonwizard.utils.FormUtils.getSubFormJson(fieldObject.getString(JsonFormConstants.CONTENT_FORM), "", this);
                                 processRequiredStepsField(subFormJson);
                             } catch (Exception e) {
                                 Log.e(TAG, e.getMessage());

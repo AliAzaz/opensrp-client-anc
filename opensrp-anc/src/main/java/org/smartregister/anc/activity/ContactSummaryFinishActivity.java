@@ -32,11 +32,11 @@ import org.smartregister.anc.helper.ImageRenderHelper;
 import org.smartregister.anc.model.PartialContact;
 import org.smartregister.anc.presenter.ProfilePresenter;
 import org.smartregister.anc.repository.PartialContactRepository;
+import org.smartregister.anc.repository.PatientRepository;
 import org.smartregister.anc.util.Constants;
 import org.smartregister.anc.util.DBConstants;
 import org.smartregister.anc.util.FilePath;
 import org.smartregister.anc.util.Utils;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -46,6 +46,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ndegwamartin on 10/07/2018.
@@ -63,10 +64,14 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
     private static final String TAG = ContactSummaryFinishActivity.class.getCanonicalName();
     private List<ContactSummary> contactSummaryList = new ArrayList<>();
     private Gson gson;
+    private Button saveAndFinishButton;
+    private String baseEntityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
 
         setUpViews();
 
@@ -101,7 +106,7 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
         backButton.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.top_patient_name)).setText(String.format(this.getString(R.string.contact_number), getIntent().getExtras().getInt(Constants.INTENT_KEY.CONTACT_NO)));
-        Button saveAndFinishButton = findViewById(R.id.finalize_contact);
+        saveAndFinishButton = findViewById(R.id.finalize_contact);
         saveAndFinishButton.setText(R.string.save_and_finish);
         saveAndFinishButton.setOnClickListener(this);
 
@@ -148,8 +153,6 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        mProfilePresenter.refreshProfileView(baseEntityId);
     }
 
     @Override
@@ -224,9 +227,9 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
     private void saveFinishForm() {
         try {
 
-            CommonPersonObjectClient pc = (CommonPersonObjectClient) getIntent().getExtras().get(Constants.INTENT_KEY.CLIENT);
+            Map<String, String> womanProfileDetails = PatientRepository.getWomanProfileDetails(getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
 
-            mProfilePresenter.saveFinishForm(pc.getDetails());
+            mProfilePresenter.saveFinishForm(womanProfileDetails);
 
             Intent contactSummaryIntent = new Intent(this, ContactSummarySendActivity.class);
             contactSummaryIntent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
@@ -304,7 +307,14 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
     }
 
     private String getValue(JSONObject jsonObject) throws Exception {
-        return jsonObject.has(JsonFormConstants.VALUE) ? jsonObject.getString(JsonFormConstants.VALUE) : "";
+        String result = jsonObject.has(JsonFormConstants.VALUE) ? jsonObject.getString(JsonFormConstants.VALUE) : "";
+
+        if (!result.isEmpty() && result.charAt(0) == '[') {
+            result = result.replace("[", "").replace("]", "").replaceAll("'", "").replaceAll(",", ", ");
+        }
+
+
+        return result;
     }
 
     protected void loadContactSummaryData() {
@@ -335,12 +345,19 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
             protected void onPostExecute(Void result) {
 
                 String edd = facts.get(DBConstants.KEY.EDD);
-                edd = "2018-02-20";
+
                 if (edd != null) {
-                    setProfileGestationAge(String.valueOf(Utils.getGestationAgeFromEDDate(edd)));
+                    try {
+
+                        PatientRepository.updateEDD(baseEntityId, Utils.reverseHyphenSeperatedValues(edd, "-"));
+
+                        saveAndFinishButton.setEnabled(true);
+
+                    } catch (IllegalArgumentException e) {
+                        saveAndFinishButton.setEnabled(false);
+                    }
 
                 }
-
 
                 ContactSummaryFinishAdapter adapter = new ContactSummaryFinishAdapter(ContactSummaryFinishActivity.this, contactSummaryList, facts);
 
@@ -352,6 +369,9 @@ public class ContactSummaryFinishActivity extends BaseProfileActivity implements
                 //  ((TextView) findViewById(R.id.section_details)).setText(crazyOutput);
                 hideProgressDialog();
 
+                //load profile details
+
+                mProfilePresenter.refreshProfileView(baseEntityId);
 
             }
         }.execute();
